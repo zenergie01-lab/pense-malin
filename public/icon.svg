@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ec7a3c"/>
+      <stop offset="1" stop-color="#f3b43a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#17100a"/>
+  <!-- spark / intention -->
+  <path d="M256 96 L286 226 L416 256 L286 286 L256 416 L226 286 L96 256 L226 226 Z" fill="url(#g)"/>
+  <circle cx="256" cy="256" r="34" fill="#17100a"/>
+  <circle cx="256" cy="256" r="14" fill="#9bb83f"/>
+</svg>
