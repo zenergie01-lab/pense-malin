@@ -1,16 +1,16 @@
 :root {
-  --bg: #fbf6ee; /* crème clair */
-  --bg-2: #f1e7d5; /* champs & tags */
-  --surface: #fffdf9; /* cartes / panneaux */
-  --surface-2: #f7efe1; /* cartes imbriquées */
-  --line: #e6dac2; /* bordures chaudes */
-  --text: #3a2c1c; /* brun chaud — texte */
-  --muted: #8a7559; /* brun adouci */
-  --gold: #b8810f; /* ambre — intention */
-  --orange: #d9601f; /* orangé brûlé — choix / action */
-  --success: #5e8c1f; /* vert olive — accompli */
-  --danger: #c43d22;
-  --wish: #3f9e3a; /* vert frais — souhaits */
+  --bg: #faf5ec; /* crème clair */
+  --bg-2: #f0e5d0; /* champs & tags */
+  --surface: #fffdf8; /* cartes / panneaux */
+  --surface-2: #f6ecda; /* cartes imbriquées */
+  --line: #e7dcc4; /* bordures chaudes */
+  --text: #3b2d1b; /* marron espresso — texte */
+  --muted: #8c7854; /* marron adouci */
+  --gold: #c28d1c; /* jaune miel — intention */
+  --orange: #d06a2c; /* orangé terracotta — choix / action */
+  --success: #5f8a2d; /* vert olive profond — accompli */
+  --danger: #c2502b; /* rouge brique chaud */
+  --wish: #6a9a3a; /* vert olive clair — souhaits */
   --radius: 16px;
   --shadow: 0 8px 24px rgba(120, 90, 50, 0.12);
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
@@ -29,7 +29,7 @@ body,
   margin: 0;
 }
 body {
-  background: radial-gradient(1100px 600px at 50% -8%, #fdeccf 0%, var(--bg) 55%);
+  background: radial-gradient(1100px 600px at 50% -8%, #fae6c6 0%, var(--bg) 55%);
   background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-body);
@@ -295,7 +295,7 @@ textarea {
   border-color: var(--danger);
 }
 .tag-deadline.u-urgent {
-  color: #c2691a;
+  color: #c4691f;
 }
 .advance {
   margin-top: 10px;
@@ -386,7 +386,7 @@ textarea {
   white-space: nowrap;
 }
 .primary {
-  background: linear-gradient(135deg, var(--orange), #d9612a);
+  background: linear-gradient(135deg, var(--orange), #be5f27);
   color: #fff;
 }
 .primary:disabled {
@@ -424,7 +424,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: linear-gradient(135deg, rgba(95, 191, 82, 0.16), rgba(243, 180, 58, 0.14));
+  background: linear-gradient(135deg, rgba(106, 154, 58, 0.18), rgba(194, 141, 28, 0.13));
   border: 1px solid var(--wish);
   border-radius: 12px;
   padding: 13px 15px;
@@ -438,7 +438,7 @@ textarea {
 
 /* ---------- Day : 2-min timer + capture ---------- */
 .intention-banner {
-  background: linear-gradient(135deg, rgba(236, 122, 60, 0.18), rgba(243, 180, 58, 0.14));
+  background: linear-gradient(135deg, rgba(208, 106, 44, 0.16), rgba(194, 141, 28, 0.13));
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 12px 14px;
@@ -675,7 +675,7 @@ textarea {
   text-align: center;
   color: var(--success);
   font-weight: 600;
-  background: rgba(94, 140, 31, 0.12);
+  background: rgba(95, 138, 45, 0.14);
   border-radius: 11px;
   padding: 11px;
   margin-top: 4px;
@@ -771,7 +771,7 @@ textarea {
   font-weight: 600;
 }
 .badge.active {
-  background: rgba(63, 158, 58, 0.15);
+  background: rgba(106, 154, 58, 0.16);
   color: var(--wish);
 }
 .badge.paused {
