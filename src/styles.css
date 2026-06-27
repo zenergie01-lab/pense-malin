@@ -813,3 +813,39 @@ textarea {
 .project-items .more {
   color: var(--gold);
 }
+
+/* ---------- Coach (agent n8n) ---------- */
+.coach-text {
+  line-height: 1.6;
+  font-size: 15px;
+}
+.coach-text strong {
+  color: var(--text);
+}
+.coach-answer {
+  display: block;
+  margin-top: 12px;
+  background: linear-gradient(135deg, #fff6e6, #fdeed6);
+  border: 1px solid var(--line);
+  line-height: 1.6;
+}
+.coach-error {
+  color: var(--danger);
+  font-size: 13.5px;
+  margin: 8px 0 0;
+}
+.coach-item {
+  display: block;
+}
+.coach-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.coach-date {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}

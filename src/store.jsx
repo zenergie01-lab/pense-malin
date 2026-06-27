@@ -245,10 +245,12 @@ export function StoreProvider({ children }) {
         userId.current = user.id
         const cloud = await loadCloud(user.id)
         if (cancelled) return
-        if (cloud && Object.keys(cloud).length) {
+        if (cloud && cloud.profile && cloud.profile.pseudo) {
           dispatch({ type: 'hydrate', state: cloud }) // le cloud fait foi entre sessions
         } else {
-          await saveCloud(user.id, state) // première montée du local vers le cloud
+          // Pas d'état cloud exploitable (vide/réinitialisé) : on garde le local
+          // — qui peut contenir un vrai pseudo — et on le (re)monte vers le cloud.
+          await saveCloud(user.id, state)
         }
         setStatus('synced')
       } catch {

@@ -5,6 +5,7 @@ import Day from './views/Day.jsx'
 import Evening from './views/Evening.jsx'
 import Agenda from './views/Agenda.jsx'
 import Projects from './views/Projects.jsx'
+import Coach from './views/Coach.jsx'
 
 const TABS = [
   { id: 'morning', icon: '🌅', label: 'Matin', view: Morning },
@@ -12,6 +13,7 @@ const TABS = [
   { id: 'evening', icon: '🌙', label: 'Soir', view: Evening },
   { id: 'agenda', icon: '🗂️', label: 'Agenda', view: Agenda },
   { id: 'projects', icon: '🌱', label: 'Élan', view: Projects },
+  { id: 'coach', icon: '🧭', label: 'Coach', view: Coach },
 ]
 
 // L'onglet par défaut suit l'heure : matin / journée / soir.

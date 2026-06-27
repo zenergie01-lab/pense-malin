@@ -1,0 +1,129 @@
+{
+  "name": "Pense Malin — Coach (agent orchestrateur)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pense-malin-coach",
+        "responseMode": "responseNode",
+        "options": { "allowedOrigins": "*" }
+      },
+      "id": "webhook-coach",
+      "name": "Webhook Coach",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [240, 200],
+      "webhookId": "pense-malin-coach",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Demande de l'utilisateur :\n{{ $json.body.question }}\n\nDonnées Pense Malin (JSON) :\n{{ JSON.stringify($json.body.state) }}",
+        "options": {
+          "systemMessage": "Tu es le Coach de « Pense Malin », un agenda conscient qui transforme les obligations en choix et les pensées en réalité. Tu reçois les données JSON de l'utilisateur (tasks [type todo/wish, status, deadline, projectId, completedAt], captures, projects, reviews, profile.points/streak, acceptedChallenges) et une demande. Réponds en français, de façon chaleureuse, concrète et bienveillante. Analyse l'avancement, relie les actions aux projets, repère les schémas et les synchronicités, et propose 1 à 3 prochains pas concrets. Sois bref et utile, sans blabla. Si on te demande le suivi d'un projet : donne son état, ce qui a avancé, ce qui bloque, et la prochaine action."
+        }
+      },
+      "id": "agent-reponse",
+      "name": "Agent réponse",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [520, 200]
+    },
+    {
+      "parameters": { "model": "anthropic/claude-3.7-sonnet", "options": {} },
+      "id": "modele-reponse",
+      "name": "Modèle (OpenRouter)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [520, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"answer\": $json.output } }}"
+      },
+      "id": "repondre",
+      "name": "Répondre",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [820, 200]
+    },
+    {
+      "parameters": {
+        "rule": { "interval": [ { "field": "cronExpression", "expression": "0 21 * * *" } ] }
+      },
+      "id": "planif-soir",
+      "name": "Chaque soir 21h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [240, 640]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "getAll",
+        "tableId": "app_state",
+        "returnAll": true
+      },
+      "id": "lire-etats",
+      "name": "Lire les états",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [500, 640]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Établis la synthèse du jour pour cet utilisateur. Données Pense Malin (JSON) :\n{{ JSON.stringify($json.data) }}",
+        "options": {
+          "systemMessage": "Tu es le Coach de « Pense Malin ». À partir des données JSON de l'utilisateur, rédige la synthèse du jour en français, en Markdown court : 1) Ce qui a avancé aujourd'hui (tâches faites, captures du jour) ; 2) L'état de chaque projet et son élan ; 3) Une observation (schéma, synchronicité, gratitude) ; 4) Une intention concrète pour demain. Ton chaleureux et motivant. 120 à 180 mots maximum. Si la journée est vide, encourage sans culpabiliser."
+        }
+      },
+      "id": "agent-synthese",
+      "name": "Agent synthèse",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [760, 640]
+    },
+    {
+      "parameters": { "model": "anthropic/claude-3.5-haiku", "options": {} },
+      "id": "modele-synthese",
+      "name": "Modèle synthèse (OpenRouter)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [760, 840]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "pm_insights",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            { "fieldId": "user_id", "fieldValue": "={{ $('Lire les états').item.json.user_id }}" },
+            { "fieldId": "kind", "fieldValue": "daily" },
+            { "fieldId": "title", "fieldValue": "={{ $now.format('yyyy-MM-dd') }}" },
+            { "fieldId": "content", "fieldValue": "={{ $json.output }}" }
+          ]
+        }
+      },
+      "id": "ecrire-synthese",
+      "name": "Enregistrer la synthèse",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1040, 640]
+    }
+  ],
+  "connections": {
+    "Webhook Coach": { "main": [[{ "node": "Agent réponse", "type": "main", "index": 0 }]] },
+    "Modèle (OpenRouter)": { "ai_languageModel": [[{ "node": "Agent réponse", "type": "ai_languageModel", "index": 0 }]] },
+    "Agent réponse": { "main": [[{ "node": "Répondre", "type": "main", "index": 0 }]] },
+    "Chaque soir 21h": { "main": [[{ "node": "Lire les états", "type": "main", "index": 0 }]] },
+    "Lire les états": { "main": [[{ "node": "Agent synthèse", "type": "main", "index": 0 }]] },
+    "Modèle synthèse (OpenRouter)": { "ai_languageModel": [[{ "node": "Agent synthèse", "type": "ai_languageModel", "index": 0 }]] },
+    "Agent synthèse": { "main": [[{ "node": "Enregistrer la synthèse", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}
