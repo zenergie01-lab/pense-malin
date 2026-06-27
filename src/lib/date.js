@@ -42,3 +42,18 @@ export function prettyToday() {
 export function dateOffset(n) {
   return new Date(Date.now() + n * DAY).toISOString().slice(0, 10)
 }
+
+// Horizons d'un souhait : "réel à 100% dans …".
+export const HORIZONS = [
+  { key: '1s', label: '1 semaine', days: 7 },
+  { key: '15j', label: '15 jours', days: 15 },
+  { key: '1m', label: '1 mois', days: 30 },
+  { key: '3m', label: '3 mois', days: 91 },
+  { key: '6m', label: '6 mois', days: 182 },
+  { key: '1an', label: '1 an', days: 365 },
+  { key: '2ans', label: '2 ans', days: 730 },
+  { key: '5ans', label: '5 ans', days: 1825 },
+  { key: '10ans', label: '10 ans', days: 3650 },
+]
+
+export const horizonLabel = (key) => HORIZONS.find((h) => h.key === key)?.label || null

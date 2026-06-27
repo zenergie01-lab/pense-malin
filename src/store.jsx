@@ -22,6 +22,7 @@ export const POINTS = {
   wishDone: 30, // un souhait devenu réalité
   taskDone: 10, // une obligation cochée
   challenge: 10, // défi de choix relevé (sortir de la routine)
+  sign: 3, // un signe réel remarqué qui attire un souhait
 }
 
 function emptyState() {
@@ -69,6 +70,9 @@ function reducer(state, action) {
         title: action.title.trim(),
         type: action.taskType, // 'todo' | 'wish'
         deadline: action.deadline || null,
+        time: action.time || null, // heure du rendez-vous (todo)
+        horizon: action.horizon || null, // échéance "100%" du souhait (wish)
+        signs: [], // petits signes remarqués qui attirent le souhait
         plannedDate: null,
         status: 'open',
         advanced: false,
@@ -77,6 +81,16 @@ function reducer(state, action) {
       }
       if (!task.title) return state
       return { ...state, tasks: [task, ...state.tasks] }
+    }
+
+    case 'addSign': {
+      const text = (action.text || '').trim()
+      if (!text) return state
+      const sign = { id: uid(), text, date: new Date().toISOString() }
+      const tasks = state.tasks.map((t) =>
+        t.id === action.id ? { ...t, signs: [sign, ...(t.signs || [])] } : t,
+      )
+      return { ...state, tasks, profile: award(state.profile, POINTS.sign) }
     }
 
     case 'advanceTask': {

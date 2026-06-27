@@ -330,6 +330,62 @@ textarea {
   background: var(--orange);
   color: #2a1606;
 }
+.signs {
+  margin-top: 12px;
+}
+.attraction-bar {
+  height: 7px;
+  background: var(--bg-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.attraction-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--wish), var(--gold));
+  transition: width 0.4s ease;
+}
+.attraction-label {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 6px 0 8px;
+  font-style: italic;
+}
+.add-sign {
+  display: flex;
+  gap: 6px;
+}
+.add-sign input {
+  flex: 1;
+  font-size: 13.5px;
+  padding: 8px 11px;
+}
+.sign-add {
+  flex: none;
+  width: 40px;
+  border: 1px solid var(--wish);
+  background: var(--surface);
+  color: var(--wish);
+  border-radius: 10px;
+  font-size: 15px;
+}
+.sign-add:hover {
+  background: var(--wish);
+  color: #fff;
+}
+.sign-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.sign-list .more {
+  color: var(--wish);
+}
+
 .ghost {
   background: none;
   border: none;
@@ -365,16 +421,59 @@ textarea {
 }
 .add-task {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
 }
 .add-task input {
   flex: 1;
 }
+.add-row {
+  flex: 1 1 100%;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.add-row .primary {
+  flex: none;
+}
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+.horizon-sel {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 11px;
+  padding: 11px 13px;
+  font-size: 15px;
+}
 .date-in {
   flex: none;
-  width: 140px;
+  width: 150px;
   color-scheme: light;
+}
+.time-in {
+  flex: none;
+  width: 120px;
+  color-scheme: light;
+}
+.tag-time {
+  color: var(--orange);
+}
+.tag-horizon {
+  color: var(--wish);
+  border-color: var(--wish);
 }
 .primary,
 .success {
