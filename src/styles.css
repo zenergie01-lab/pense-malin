@@ -536,6 +536,15 @@ textarea {
 }
 
 /* ---------- Day : 2-min timer + capture ---------- */
+.intention-seed {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.4;
+  margin: 4px 4px 16px;
+}
 .intention-banner {
   background: linear-gradient(135deg, rgba(208, 106, 44, 0.16), rgba(194, 141, 28, 0.13));
   border: 1px solid var(--line);

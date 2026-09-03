@@ -1,27 +1,18 @@
 import { useState } from 'react'
 import { useStore } from './store.jsx'
-import Morning from './views/Morning.jsx'
-import Day from './views/Day.jsx'
-import Evening from './views/Evening.jsx'
-import Agenda from './views/Agenda.jsx'
-import Projects from './views/Projects.jsx'
+import Today from './views/Today.jsx'
+import Intentions from './views/Intentions.jsx'
 import Coach from './views/Coach.jsx'
 
 const TABS = [
-  { id: 'morning', icon: '🌅', label: 'Matin', view: Morning },
-  { id: 'day', icon: '☀️', label: 'Journée', view: Day },
-  { id: 'evening', icon: '🌙', label: 'Soir', view: Evening },
-  { id: 'agenda', icon: '🗂️', label: 'Agenda', view: Agenda },
-  { id: 'projects', icon: '🌱', label: 'Élan', view: Projects },
+  { id: 'today', icon: '🌅', label: "Aujourd'hui", view: Today },
+  { id: 'intentions', icon: '✦', label: 'Intentions', view: Intentions },
   { id: 'coach', icon: '🧭', label: 'Coach', view: Coach },
 ]
 
-// L'onglet par défaut suit l'heure : matin / journée / soir.
+// Un seul écran de rituel : on ouvre toujours sur « Aujourd'hui ».
 function defaultTab() {
-  const h = new Date().getHours()
-  if (h < 11) return 'morning'
-  if (h < 18) return 'day'
-  return 'evening'
+  return 'today'
 }
 
 const SYNC = {
@@ -51,9 +42,6 @@ export default function App() {
             title={(SYNC[status] || SYNC.local).label}
             style={{ background: (SYNC[status] || SYNC.local).color }}
           />
-          <span className="points" title="Points">
-            {state.profile.points} pts
-          </span>
           <span className="streak" title="Jours d'affilée">
             🔥 {state.profile.streak}
           </span>
