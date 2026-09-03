@@ -772,6 +772,73 @@ textarea {
   flex-direction: column;
   gap: 10px;
 }
+.ob-step {
+  animation: fade 0.3s ease;
+}
+.ob-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 1.15;
+  margin: 6px 0 10px;
+}
+.ob-text {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 22px;
+}
+.ob-text strong {
+  color: var(--text);
+}
+.ob-points {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 24px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.ob-points li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  line-height: 1.4;
+  color: var(--text);
+  font-size: 15px;
+}
+.ob-points li span {
+  font-size: 20px;
+  flex: none;
+}
+.ob-back {
+  display: block;
+  margin: 12px auto 0;
+}
+.ob-skip {
+  color: var(--muted);
+  font-size: 12.5px;
+  margin: 6px 0 0;
+}
+.ob-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+.ob-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: 0.25s;
+}
+.ob-dot.active {
+  background: var(--orange);
+  width: 22px;
+  border-radius: 999px;
+}
 
 /* ---------- Phase 3 : défi de choix & synchronicités ---------- */
 .challenge {
