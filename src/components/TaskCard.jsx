@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useStore } from '../store.jsx'
-import { deadlineLabel, urgency, dateOffset, horizonLabel } from '../lib/date.js'
+import { deadlineLabel, urgency, dateOffset, horizonPhrase } from '../lib/date.js'
 
 // Carte d'une tâche.
 // - Obligation ("todo") : date + heure de rdv, et l'option de l'AVANCER (le devoir
@@ -37,7 +37,7 @@ export default function TaskCard({ task }) {
         <div className="task-title">{task.title}</div>
         <div className="task-meta">
           {isWish && task.horizon && (
-            <span className="tag tag-horizon">✦ 100% dans {horizonLabel(task.horizon)}</span>
+            <span className="tag tag-horizon">✦ 100% {horizonPhrase(task.horizon)}</span>
           )}
           {!isWish && task.deadline && (
             <span className={`tag tag-deadline u-${urgency(task.deadline)}`}>⏳ {deadlineLabel(task.deadline)}</span>

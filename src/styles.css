@@ -545,6 +545,18 @@ textarea {
   line-height: 1.4;
   margin: 4px 4px 16px;
 }
+.pas-intro {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+.pas-intro strong {
+  color: var(--orange);
+  font-style: normal;
+}
 .intention-banner {
   background: linear-gradient(135deg, rgba(208, 106, 44, 0.16), rgba(194, 141, 28, 0.13));
   border: 1px solid var(--line);

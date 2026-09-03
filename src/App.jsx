@@ -5,14 +5,14 @@ import Intentions from './views/Intentions.jsx'
 import Coach from './views/Coach.jsx'
 
 const TABS = [
-  { id: 'today', icon: '🌅', label: "Aujourd'hui", view: Today },
   { id: 'intentions', icon: '✦', label: 'Intentions', view: Intentions },
+  { id: 'today', icon: '🌅', label: "Aujourd'hui", view: Today },
   { id: 'coach', icon: '🧭', label: 'Coach', view: Coach },
 ]
 
-// Un seul écran de rituel : on ouvre toujours sur « Aujourd'hui ».
+// On ouvre sur « Intentions » : d'abord le cap, ensuite le pas du jour.
 function defaultTab() {
-  return 'today'
+  return 'intentions'
 }
 
 const SYNC = {

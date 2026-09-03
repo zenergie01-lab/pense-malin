@@ -97,9 +97,13 @@ export default function Today() {
         )}
       </section>
 
-      {/* — Tes pas du jour (obligations) — */}
+      {/* — Un petit pas vers le cap (obligations reframées) — */}
       <section className="panel">
-        <h2 className="panel-title">Tes pas du jour</h2>
+        <h2 className="panel-title">✦ Un petit pas vers mes intentions</h2>
+        <p className="pas-intro">
+          Même si « il faut », je <strong>choisis</strong> de commencer par un petit pas — pour aller vers et attirer
+          mes désirs. Je m'oriente vers mon cap, plutôt que de lui tourner le dos.
+        </p>
         <AddTask taskType="todo" />
         {openTodos.length ? (
           <div className="stack">

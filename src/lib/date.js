@@ -45,6 +45,7 @@ export function dateOffset(n) {
 
 // Horizons d'un souhait : "réel à 100% dans …".
 export const HORIZONS = [
+  { key: 'jour', label: "aujourd'hui", days: 0 },
   { key: '1s', label: '1 semaine', days: 7 },
   { key: '15j', label: '15 jours', days: 15 },
   { key: '1m', label: '1 mois', days: 30 },
@@ -57,3 +58,10 @@ export const HORIZONS = [
 ]
 
 export const horizonLabel = (key) => HORIZONS.find((h) => h.key === key)?.label || null
+
+// Phrase lisible : "aujourd'hui" ou "dans 1 an".
+export const horizonPhrase = (key) => {
+  if (key === 'jour') return "aujourd'hui"
+  const l = horizonLabel(key)
+  return l ? `dans ${l}` : null
+}
