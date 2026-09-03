@@ -4,6 +4,7 @@ import { supabase } from '../config/supabase.js'
 
 // URL du webhook n8n : variable d'env au build, sinon réglée dans l'app (localStorage).
 const ENV_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || ''
+const TOKEN = import.meta.env.VITE_N8N_WEBHOOK_TOKEN || ''
 const LS_KEY = 'pm-webhook-url'
 
 // Mini-rendu Markdown (gras + sauts de ligne), après échappement HTML.
@@ -65,7 +66,7 @@ export default function Coach() {
       const res = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question.trim(), state }),
+        body: JSON.stringify({ question: question.trim(), state, token: TOKEN }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json().catch(() => ({}))
