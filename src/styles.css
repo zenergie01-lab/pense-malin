@@ -557,6 +557,9 @@ textarea {
   color: var(--orange);
   font-style: normal;
 }
+.step-schedule {
+  margin: 12px 0 8px;
+}
 .intention-banner {
   background: linear-gradient(135deg, rgba(208, 106, 44, 0.16), rgba(194, 141, 28, 0.13));
   border: 1px solid var(--line);

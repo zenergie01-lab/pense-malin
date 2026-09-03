@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useStore, isToday, todayStr } from '../store.jsx'
 import TaskCard from '../components/TaskCard.jsx'
-import AddTask from '../components/AddTask.jsx'
-import TwoMinTimer from '../components/TwoMinTimer.jsx'
 import { daysUntil, prettyToday } from '../lib/date.js'
 import { todayChallenge } from '../lib/challenges.js'
 
@@ -19,6 +17,9 @@ export default function Today() {
   const { state, dispatch } = useStore()
   const [kind, setKind] = useState('idea')
   const [text, setText] = useState('')
+  const [step, setStep] = useState('')
+  const [stepDate, setStepDate] = useState('')
+  const [stepTime, setStepTime] = useState('')
   const existingReview = state.reviews.find((r) => r.date === todayStr())
   const [noticed, setNoticed] = useState(existingReview?.noticed ?? '')
   const [mood, setMood] = useState(existingReview?.mood ?? null)
@@ -42,6 +43,15 @@ export default function Today() {
     if (!text.trim()) return
     dispatch({ type: 'capture', content: text, kind })
     setText('')
+  }
+
+  function addStep(e) {
+    e.preventDefault()
+    if (!step.trim()) return
+    dispatch({ type: 'addTask', title: step, taskType: 'todo', deadline: stepDate || null, time: stepTime || null })
+    setStep('')
+    setStepDate('')
+    setStepTime('')
   }
 
   return (
@@ -97,14 +107,31 @@ export default function Today() {
         )}
       </section>
 
-      {/* — Un petit pas vers le cap (obligations reframées) — */}
+      {/* — Un petit pas vers le cap (obligation reframée en choix) — */}
       <section className="panel">
         <h2 className="panel-title">✦ Un petit pas vers mes intentions</h2>
         <p className="pas-intro">
-          Même si « il faut », je <strong>choisis</strong> de commencer par un petit pas — pour aller vers et attirer
-          mes désirs. Je m'oriente vers mon cap, plutôt que de lui tourner le dos.
+          Même si « il faut », je m'oriente vers mon cap plutôt que de lui tourner le dos. Pour aller vers et attirer
+          mes désirs, <strong>je choisis</strong> :
         </p>
-        <AddTask taskType="todo" />
+        <form className="step-form" onSubmit={addStep}>
+          <input
+            className="step-input"
+            value={step}
+            onChange={(e) => setStep(e.target.value)}
+            placeholder="le petit pas que je choisis…"
+          />
+          <p className="pas-intro step-schedule">
+            <strong>je programme</strong> :
+          </p>
+          <div className="add-row">
+            <input className="date-in" type="date" value={stepDate} onChange={(e) => setStepDate(e.target.value)} />
+            <input className="time-in" type="time" value={stepTime} onChange={(e) => setStepTime(e.target.value)} />
+            <button className="primary" type="submit">
+              Ajouter
+            </button>
+          </div>
+        </form>
         {openTodos.length ? (
           <div className="stack">
             {openTodos.map((t) => (
@@ -116,9 +143,7 @@ export default function Today() {
         )}
       </section>
 
-      {/* — En mouvement (2 min + capture) — */}
-      <TwoMinTimer />
-
+      {/* — Capture éclair — */}
       <section className="panel">
         <h2 className="panel-title">Capture éclair</h2>
         <div className="kind-row">
