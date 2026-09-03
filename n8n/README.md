@@ -39,6 +39,30 @@ Active le workflow (toggle en haut à droite). Le webhook passe en mode *product
 Onglet Coach → pose une question (« Résume ma semaine »). Si le workflow est actif et
 les credentials OK, la réponse s'affiche et s'archive dans l'historique.
 
+## Synthèse quotidienne vs bilan hebdomadaire
+
+Deux niveaux, comme demandé (jour par jour, puis bilan de semaine) :
+
+- **Synthèse du jour** (`pense-malin-coach.workflow.json`, tous les soirs 21h) : l'agent
+  ne regarde QUE l'activité **datée d'aujourd'hui**. Si tu as importé une ancienne
+  version qui « résumait tout », remplace le *System Message* et le *Prompt* du nœud
+  **« Agent synthèse »** par ceux du fichier à jour (ils recadrent l'agent sur la date
+  du jour).
+- **Bilan de la semaine** (`pense-malin-bilan-hebdo.workflow.json`, chaque **dimanche 21h**) :
+  lit les **7 synthèses quotidiennes** de la semaine (`pm_insights`, kind `daily`) et en
+  fait une **analyse** (fils récurrents, schémas, cap, focus de la semaine suivante),
+  enregistrée en `pm_insights` avec kind `weekly`.
+
+### Installer le bilan hebdo
+1. **Import** de `pense-malin-bilan-hebdo.workflow.json`.
+2. Assigne les **mêmes credentials** que le premier workflow : *Supabase pense-malin (cloud)*
+   sur « Lire les synthèses du jour » et « Enregistrer le bilan », *OpenRouter* sur le nœud « Modèle bilan ».
+3. Vérifie le nœud « Enregistrer le bilan » : **Operation = Create**, **Data to Send = Define Below**.
+4. **Active** le workflow.
+
+Les deux niveaux s'affichent dans l'app, onglet **🧭 Coach** : *Synthèse du jour* en haut,
+*Bilan de la semaine* juste en dessous, puis l'historique.
+
 ## Notes
 - Le projet Supabase gratuit se met en pause après ~7 j d'inactivité : pour que la
   synthèse du soir tourne, le projet doit être actif.

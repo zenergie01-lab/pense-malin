@@ -1,0 +1,89 @@
+{
+  "name": "Pense Malin — Bilan hebdomadaire",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [ { "field": "cronExpression", "expression": "0 21 * * 0" } ] }
+      },
+      "id": "planif-dimanche",
+      "name": "Chaque dimanche 21h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [220, 400]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "getAll",
+        "tableId": "pm_insights",
+        "returnAll": true
+      },
+      "id": "lire-syntheses",
+      "name": "Lire les synthèses du jour",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [460, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const weekAgo = new Date(Date.now() - 7*86400000).toISOString();\nconst byUser = {};\nfor (const item of $input.all()) {\n  const r = item.json;\n  if (r.kind !== 'daily') continue;\n  if ((r.created_at || '') < weekAgo) continue;\n  (byUser[r.user_id] = byUser[r.user_id] || []).push((r.title || '') + ' : ' + (r.content || ''));\n}\nreturn Object.keys(byUser).map((user_id) => ({\n  json: { user_id, semaine: byUser[user_id].reverse().join('\\n\\n---\\n\\n') }\n}));"
+      },
+      "id": "grouper-semaine",
+      "name": "Grouper la semaine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 400]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Voici les synthèses quotidiennes de la semaine écoulée :\n\n{{ $json.semaine }}\n\nÉtablis le BILAN de la semaine.",
+        "options": {
+          "systemMessage": "Tu es le Coach de « Pense Malin ». Tu rédiges le BILAN DE LA SEMAINE en français (Markdown court, 150 à 220 mots), à partir des synthèses quotidiennes fournies. Structure : 1) Ce qui a réellement avancé cette semaine (fais ressortir les fils et projets récurrents) ; 2) Les schémas et synchronicités remarqués ; 3) Vers quelles intentions / quel cap la semaine a orienté, et ce qui s'en éloigne ; 4) UN focus concret pour la semaine prochaine. Ton chaleureux, lucide et encourageant. S'il n'y a aucune synthèse, indique simplement que la semaine a été calme."
+        }
+      },
+      "id": "agent-bilan",
+      "name": "Agent bilan hebdo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [940, 400]
+    },
+    {
+      "parameters": { "model": "anthropic/claude-3.7-sonnet", "options": {} },
+      "id": "modele-bilan",
+      "name": "Modèle bilan (OpenRouter)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [940, 600]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "pm_insights",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            { "fieldId": "user_id", "fieldValue": "={{ $('Grouper la semaine').item.json.user_id }}" },
+            { "fieldId": "kind", "fieldValue": "weekly" },
+            { "fieldId": "title", "fieldValue": "={{ 'Bilan de la semaine — ' + $now.format('yyyy-MM-dd') }}" },
+            { "fieldId": "content", "fieldValue": "={{ $json.output }}" }
+          ]
+        }
+      },
+      "id": "ecrire-bilan",
+      "name": "Enregistrer le bilan",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1200, 400]
+    }
+  ],
+  "connections": {
+    "Chaque dimanche 21h": { "main": [[{ "node": "Lire les synthèses du jour", "type": "main", "index": 0 }]] },
+    "Lire les synthèses du jour": { "main": [[{ "node": "Grouper la semaine", "type": "main", "index": 0 }]] },
+    "Grouper la semaine": { "main": [[{ "node": "Agent bilan hebdo", "type": "main", "index": 0 }]] },
+    "Modèle bilan (OpenRouter)": { "ai_languageModel": [[{ "node": "Agent bilan hebdo", "type": "ai_languageModel", "index": 0 }]] },
+    "Agent bilan hebdo": { "main": [[{ "node": "Enregistrer le bilan", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

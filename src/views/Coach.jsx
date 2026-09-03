@@ -84,7 +84,8 @@ export default function Coach() {
   }
 
   const daily = insights.find((i) => i.kind === 'daily')
-  const history = insights.filter((i) => i.id !== daily?.id)
+  const weekly = insights.find((i) => i.kind === 'weekly')
+  const history = insights.filter((i) => i.id !== daily?.id && i.id !== weekly?.id)
 
   return (
     <div className="view">
@@ -107,6 +108,13 @@ export default function Coach() {
           </p>
         )}
       </section>
+
+      {weekly && (
+        <section className="panel">
+          <h2 className="panel-title">📅 Bilan de la semaine</h2>
+          <div className="coach-text" dangerouslySetInnerHTML={renderMarkdown(weekly.content)} />
+        </section>
+      )}
 
       <section className="panel">
         <h2 className="panel-title">Demander au coach</h2>

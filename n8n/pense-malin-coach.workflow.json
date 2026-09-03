@@ -75,9 +75,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Établis la synthèse du jour pour cet utilisateur. Données Pense Malin (JSON) :\n{{ JSON.stringify($json.data) }}",
+        "text": "=Nous sommes le {{ $now.format('yyyy-MM-dd') }}. Voici les données COMPLÈTES de l'utilisateur (JSON) — mais tu n'analyses QUE l'activité datée d'aujourd'hui.\n\n{{ JSON.stringify($json.data) }}",
         "options": {
-          "systemMessage": "Tu es le Coach de « Pense Malin ». À partir des données JSON de l'utilisateur, rédige la synthèse du jour en français, en Markdown court : 1) Ce qui a avancé aujourd'hui (tâches faites, captures du jour) ; 2) L'état de chaque projet et son élan ; 3) Une observation (schéma, synchronicité, gratitude) ; 4) Une intention concrète pour demain. Ton chaleureux et motivant. 120 à 180 mots maximum. Si la journée est vide, encourage sans culpabiliser."
+          "systemMessage": "Tu es le Coach de « Pense Malin ». Tu rédiges la SYNTHÈSE D'UNE SEULE JOURNÉE (aujourd'hui), en français, Markdown court.\n\nRÈGLE ABSOLUE — ne prends en compte QUE ce qui porte la date d'aujourd'hui :\n- tâches dont completedAt = aujourd'hui (faites aujourd'hui) ;\n- captures dont date = aujourd'hui ;\n- signes (tasks[].signs[]) dont date = aujourd'hui ;\n- le défi relevé aujourd'hui (acceptedChallenges[aujourd'hui]).\nIgnore tout ce qui vient des jours précédents. Les souhaits/intentions ouverts servent seulement de CAP (contexte), jamais de bilan.\n\nStructure (120-180 mots max) : 1) Ce qui a avancé aujourd'hui ; 2) Vers quelle(s) intention(s)/cap ça oriente ; 3) Une observation du jour (signe, synchronicité, gratitude) ; 4) Une intention concrète pour demain. Si rien n'a été fait aujourd'hui, encourage doucement sans culpabiliser."
         }
       },
       "id": "agent-synthese",
