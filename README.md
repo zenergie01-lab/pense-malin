@@ -27,9 +27,26 @@ npm run dev      # http://localhost:5180
 npm run build    # génère dist/
 ```
 
-## Configuration
+## Configuration (variables d'environnement)
 
-Le client Supabase ([`src/config/supabase.js`](src/config/supabase.js)) lit
-`VITE_SUPABASE_URL` et `VITE_SUPABASE_KEY` si présents, sinon utilise les valeurs
-du projet par défaut (la clé publique peut vivre côté client, la sécurité est
-assurée par les politiques RLS).
+Voir [`.env.example`](.env.example). En local, copie-le en `.env.local`. En prod,
+déclare les mêmes clés dans **Vercel → Settings → Environment Variables**.
+
+| Variable | Rôle |
+|---|---|
+| `VITE_SUPABASE_URL` | URL du projet Supabase (défaut intégré si absente) |
+| `VITE_SUPABASE_KEY` | Clé publique Supabase — sécurité assurée par les RLS |
+| `VITE_N8N_WEBHOOK_URL` | URL du webhook n8n du Coach. Si définie, l'app l'utilise et **masque** le champ de saisie de l'onglet Coach |
+
+⚠️ Les variables `VITE_*` sont **intégrées au bundle client** : elles sortent la config
+du code source, mais ne sont pas secrètes. La sécurité réelle est côté serveur
+(RLS Supabase, règles du webhook n8n : CORS restreint à ton domaine, éventuel token,
+ou proxy serveur).
+
+### Déclarer le webhook dans Vercel
+1. Vercel → projet **pense-malin** → **Settings → Environment Variables**.
+2. **Add** : `VITE_N8N_WEBHOOK_URL` = l'URL de prod de ton webhook, pour **Production**
+   *et* **Preview**.
+3. **Redeploy** (les variables Vite sont lues au moment du build).
+4. Dans l'app, onglet 🧭 Coach : le champ « Adresse du coach » disparaît — l'URL vient
+   désormais de l'environnement.
